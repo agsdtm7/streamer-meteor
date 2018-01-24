@@ -1,6 +1,7 @@
 import React from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
+import { Session } from 'meteor/session';
 
 import { Streams } from '../api/streams';
 import StreamListHeader from './StreamListHeader';
@@ -27,8 +28,14 @@ StreamList.propTypes = {
 }
 
 export default createContainer(() => {
+  const selectedStreamId = Session.get('selectedStreamId');
   Meteor.subscribe('streams');
   return {
-    streams: Streams.find().fetch()
+    streams: Streams.find().fetch().map((stream) => {
+      return {
+        ...stream,
+        selected: stream._id === selectedStreamId
+      };
+    })
   };
 }, StreamList);
