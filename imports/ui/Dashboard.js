@@ -3,6 +3,7 @@ import React from 'react';
 // import { Links } from '../api/links';
 import PrivateHeader from './PrivateHeader';
 
+import StreamList from './StreamList';
 
 export default () => {
   return (
@@ -10,6 +11,7 @@ export default () => {
       <PrivateHeader title="Dashboard" />
     <div className="page-content">
       Dashboard page content
+      <StreamList />
     </div>
   </div>
   );
