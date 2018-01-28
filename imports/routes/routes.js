@@ -7,6 +7,7 @@ import Signup from '../ui/Signup';
 import Dashboard from '../ui/Dashboard';
 import NotFound from '../ui/NotFound';
 import Login from '../ui/Login';
+import PrivateDashboard from '../ui/PrivateDashboard';
 
 const unauthenticatedPages = ['/','/signup'];
 const authenticatedPages = ['/dashboard'];
@@ -20,7 +21,7 @@ const onEnterPublicPage = () => {
 };
 
 const onEnterPrivatePage = () => {
-  // when user doesn't log in do the following
+  // when user doesn't log in, do the following
   if(!Meteor.userId()){
     browserHistory.replace('/');
   }
@@ -32,6 +33,15 @@ const onEnterStreamPage = (nextState) => {
     browserHistory.replace('/');
   }else{
     Session.set('selectedStreamId', nextState.params.id); // params is from the next state
+  }
+};
+// addition Thursday 1/25/18
+const onEnterPrivateDashboardPage = (nextState) => {
+  console.log('I am called');
+  if(!Meteor.userId()){
+    browserHistory.replace('/');
+  }else{
+    Session.set('selectedPrivateDashboard', nextState.params.id); // params is from the next state
   }
 };
 
@@ -57,6 +67,8 @@ export const routes = (
     <Route path="/signup" component={Signup} onEnter ={onEnterPublicPage}/>
     <Route path="/dashboard" component={Dashboard} onEnter ={onEnterPrivatePage}/>
     <Route path="/dashboard/:id" component={Dashboard} onEnter ={onEnterStreamPage}/>
+    <Route path="/private_dashboard" component={PrivateDashboard} onEnter ={onEnterPrivateDashboardPage}/>
+    <Route path="/private_dashboard/:id" component={PrivateDashboard} onEnter ={onEnterStreamPage}/>
     <Route path="/login" component={Login}/>
     <Route path="*" component={NotFound}/>
   </Router>

@@ -1,0 +1,8 @@
+<Iframe url='http://www.youtube.com/embed/ + ${this.props.stream.link}'
+width="450px"
+height="450px"
+id="myId"
+className="myClassname"
+display="initial"
+position="relative"
+allowFullScreen/>

@@ -13,15 +13,34 @@ Tracker.autorun(() => {
   onAuthChange(isAuthenticated);
 });
 
-Tracker.autorun(() => {
+Tracker.autorun(function(){
   const selectedStreamId = Session.get('selectedStreamId');
 
   if(selectedStreamId){
-    browserHistory.replace(`/dashboard/${selectedStreamId}`);
+    browserHistory.replace(`/private_dashboard/${selectedStreamId}`);
   }
 });
 
+Tracker.autorun(() => {
+  const selectedPrivateDashboard = Session.get('selectedPrivateDashboard');
+
+  if(!selectedPrivateDashboard){
+    browserHistory.replace(`/private_dashboard`);
+  }else{
+    browserHistory.replace(`/dashboard`);
+  }
+});
+
+// Tracker.autorun(() => {
+//   const selectedStreamVideoId = Session.get('selectedStreamVideoId');
+//
+//   //if(selectedStreamVideoId){
+//   //  browserHistory.replace(`/dashboard/${selectedStreamVideoId}`);
+//   //}
+// });
+
 Meteor.startup(() => {
   Session.set('selectedStreamId', undefined);
+  Session.set('selectedPrivateDashboard', undefined);
   ReactDOM.render(routes, document.getElementById('app'));
 });
