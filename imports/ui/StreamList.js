@@ -28,13 +28,15 @@ StreamList.propTypes = {
 }
 
 export default createContainer(() => {
+  const selectedStreamLink = Session.get('selectedStreamLink');
   const selectedStreamId = Session.get('selectedStreamId');
   Meteor.subscribe('streams');
   return {
     streams: Streams.find().fetch().map((stream) => {
       return {
         ...stream,
-        selected: stream._id === selectedStreamId
+        selected: stream._id === selectedStreamId,
+        streaming: stream.link === selectedStreamLink
       };
     })
   };

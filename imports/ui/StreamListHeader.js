@@ -5,7 +5,7 @@ import { Session } from 'meteor/session';
 
 export const StreamListHeader = (props) => {
   const selectedPrivateDashboard = Session.get('selectedPrivateDashboard');
-  if(!selectedPrivateDashboard){
+  if(selectedPrivateDashboard){
   return (
     <div>
       <button onClick= {() => {
@@ -29,7 +29,7 @@ StreamListHeader.propTypes = {
 
 export default createContainer(() => {
   return {
-      Session,
-      meteorCall: Meteor.call
+      meteorCall: Meteor.call,
+      Session
   };
 }, StreamListHeader);

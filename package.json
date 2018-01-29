@@ -1,5 +1,5 @@
 {
-  "name": "short-lnk",
+  "name": "Streamer-App",
   "private": true,
   "scripts": {
     "start": "meteor run",

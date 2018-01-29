@@ -4,9 +4,10 @@ import { createContainer } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
 import { Streams } from '../api/streams';
 // for the iframe
-import  Iframe  from 'react-iframe';
+
 
 export class StreamEditor extends React.Component {
+
   handleTitleChange(e){
     this.props.call('streams.update', this.props.stream._id, {
         title: e.target.value
@@ -28,6 +29,7 @@ export class StreamEditor extends React.Component {
       return(
         <div>
           <input value={this.props.stream.title} placeholder="Your title here" onChange={this.handleTitleChange.bind(this)}/>
+          copy this https://www.youtube.com/embed/ and add 11 letters of your youtube link
           <input value={this.props.stream.link} placeholder="place youtube link here" onChange={this.handleLinkChange.bind(this)}/>
           <textarea value= {this.props.stream.description} placeholder="Stream Description" onChange={this.handleDescriptionChange.bind(this)}></textarea>
           <button>Delete Stream</button>

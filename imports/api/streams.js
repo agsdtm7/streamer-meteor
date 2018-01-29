@@ -56,7 +56,6 @@ Meteor.methods({
       },
       link: {
         type: String,
-        min: 10,
         optional: true
       },
       description: {

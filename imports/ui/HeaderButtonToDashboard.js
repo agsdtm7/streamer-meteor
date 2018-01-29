@@ -8,7 +8,7 @@ export const HeaderButtonToDashboard =  (props) => {
     return(
       <button className="button button--link-text"
         onClick= {() => {
-          props.Session.set('selectedPrivateDashboard', props.Accounts.userId());
+          props.Session.set('selectedPrivateDashboard', undefined);
       }}>Main Dashboard</button>
     );
   };

@@ -13,9 +13,9 @@ export const PrivateHeader = (props) => {
       <div className="header">
         <div className="header__content">
         <h1 className="header__title">{props.title}</h1>
-        {Session.get('selectedPrivateDashboard') === undefined ? <HeaderButtonToDashboard /> : <HeaderButtonToPrivate />}
+        {/* if session selectedPrivateDashboard equal undefined then show HeaderButtonToPrivate, else the other way */}
+        {Session.get('selectedPrivateDashboard') === undefined ? <HeaderButtonToPrivate /> : <HeaderButtonToDashboard /> }
           <button className="button button--link-text" onClick= {() => props.handleLogout()}>Logout</button>
-
         </div>
       </div>
   );

@@ -8,26 +8,45 @@ import { routes, onAuthChange } from '../imports/routes/routes';
 import '../imports/startup/simple-schema-configuration.js';
 
 Tracker.autorun(() => {
-  // returning truthy or falsy value, when userId is null or empty string it will return false, otherwise true
   const isAuthenticated = !!Meteor.userId();
-  onAuthChange(isAuthenticated);
+  const currentPagePrivacy = Session.get('currentPagePrivacy');
+
+  onAuthChange(isAuthenticated, currentPagePrivacy);
 });
 
-Tracker.autorun(function(){
+Tracker.autorun(() => {
   const selectedStreamId = Session.get('selectedStreamId');
 
   if(selectedStreamId){
-    browserHistory.replace(`/private_dashboard/${selectedStreamId}`);
+    const selectedPrivateDashboard = Session.get('selectedPrivateDashboard');
+    if(!selectedPrivateDashboard){
+      browserHistory.replace(`/private_dashboard/${selectedStreamId}`);
+    }else{
+      browserHistory.replace(`/dashboard/${selectedStreamId}`);
+    }
   }
 });
 
 Tracker.autorun(() => {
   const selectedPrivateDashboard = Session.get('selectedPrivateDashboard');
+  const selectedStreamId = Session.get('selectedStreamId');
 
-  if(!selectedPrivateDashboard){
-    browserHistory.replace(`/private_dashboard`);
+  if(selectedPrivateDashboard){
+    if(selectedStreamId){
+      console.log('a');
+      browserHistory.replace(`/private_dashboard/${selectedStreamId}`);
+    }else{
+      console.log('b');
+      browserHistory.replace(`/private_dashboard`);
+    }
   }else{
-    browserHistory.replace(`/dashboard`);
+    if(selectedStreamId){
+      console.log('c');
+      browserHistory.replace(`/dashboard/${selectedStreamId}`);
+    }else{
+      console.log('d');
+      browserHistory.replace(`/dashboard`);
+    }
   }
 });
 

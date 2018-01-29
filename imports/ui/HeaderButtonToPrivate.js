@@ -8,9 +8,10 @@ export const HeaderButtonToPrivate =  (props) => {
     return(
       <button className="button button--link-text"
         onClick= {() => {
-          props.Session.set('selectedPrivateDashboard', undefined);
+          props.Session.set('selectedPrivateDashboard', Accounts.userId());
+          // props.Session.set('selectedStreamId', undefined);
           //console.log('helllooooo');
-      }}>Private Dashboard</button>
+      }}>Go to Editor</button>
 
     );
   };

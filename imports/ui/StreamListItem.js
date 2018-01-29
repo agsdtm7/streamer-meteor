@@ -7,6 +7,7 @@ export const StreamListItem =  (props) => {
   return(
     <div onClick = {() => {
       props.Session.set('selectedStreamId', props.stream._id);
+      props.Session.set('selectedStreamLink', props.stream.link);
     }}>
       <h5>{ props.stream.title || 'untitled stream' }</h5>
       { props.stream.selected ? 'selected' : undefined }

@@ -9,67 +9,57 @@ import NotFound from '../ui/NotFound';
 import Login from '../ui/Login';
 import PrivateDashboard from '../ui/PrivateDashboard';
 
-const unauthenticatedPages = ['/','/signup'];
-const authenticatedPages = ['/dashboard'];
-
-const onEnterPublicPage = () => {
-  // when user logs in do the following
-  if(Meteor.userId()){
-    // we replace 'push' with 'replace' in order to fix the go back problem
-    browserHistory.replace('/dashboard');
-  }
-};
-
-const onEnterPrivatePage = () => {
-  // when user doesn't log in, do the following
-  if(!Meteor.userId()){
-    browserHistory.replace('/');
-  }
-};
 
 const onEnterStreamPage = (nextState) => {
-  // when user doesn't log in do the following
+    Session.set('selectedStreamId', nextState.params.id); // params is from the next state
+};
+
+const onLeaveStreamPage = () => {
+    Session.set('selectedStreamId', undefined);
+};
+
+const onEnterEditorPage = (nextState) => {
   if(!Meteor.userId()){
     browserHistory.replace('/');
   }else{
     Session.set('selectedStreamId', nextState.params.id); // params is from the next state
   }
 };
-// addition Thursday 1/25/18
-const onEnterPrivateDashboardPage = (nextState) => {
-  console.log('I am called');
-  if(!Meteor.userId()){
-    browserHistory.replace('/');
-  }else{
-    Session.set('selectedPrivateDashboard', nextState.params.id); // params is from the next state
-  }
-};
 
-export const onAuthChange = (isAuthenticated) => {
-  const pathname = browserHistory.getCurrentLocation().pathname;
-  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes
-  // The includes() method determines whether an array includes a certain element, returning true or false as appropriate.
-  const IsUnauthenticatedPage = unauthenticatedPages.includes(pathname); // '/','/signup'
-  const isAuthenticatedPage = authenticatedPages.includes(pathname); // '/links'
 
-  console.log('isAuthenticated', isAuthenticated);
-
+export const onAuthChange = (isAuthenticated, currentPagePrivacy) => {
+  const IsUnauthenticatedPage = currentPagePrivacy === 'unauth';
+  const isAuthenticatedPage = currentPagePrivacy === 'auth';
+  console.log('onAuthChange');
   if(IsUnauthenticatedPage && isAuthenticated){
     browserHistory.replace('/dashboard');
   }else if(isAuthenticatedPage && !isAuthenticated) {
+    console.log('onAuthChange part 2');
     browserHistory.replace('/');
   }
+};
+
+export const globalOnChange = (prevState, nextState) => {
+  globalOnEnter(nextState);
+};
+
+export const globalOnEnter = (nextState) => {
+  const lastRoute = nextState.routes[nextState.routes.length - 1];
+  Session.set('currentPagePrivacy', lastRoute.privacy);
 };
 
 export const routes = (
   <Router history={browserHistory}>
-    <Route path="/" component={Login} onEnter ={onEnterPublicPage}/>
-    <Route path="/signup" component={Signup} onEnter ={onEnterPublicPage}/>
-    <Route path="/dashboard" component={Dashboard} onEnter ={onEnterPrivatePage}/>
-    <Route path="/dashboard/:id" component={Dashboard} onEnter ={onEnterStreamPage}/>
-    <Route path="/private_dashboard" component={PrivateDashboard} onEnter ={onEnterPrivateDashboardPage}/>
-    <Route path="/private_dashboard/:id" component={PrivateDashboard} onEnter ={onEnterStreamPage}/>
-    <Route path="/login" component={Login}/>
-    <Route path="*" component={NotFound}/>
+    <Route onEnter={globalOnEnter} onChange={globalOnChange}>
+      <Route path="/" component={Login} privacy="unauth"/>
+      <Route path="/signup" component={Signup} privacy="unauth"/>
+      <Route path="/dashboard" component={Dashboard} privacy="auth"/>
+      <Route path="/dashboard/:id" component={Dashboard} privacy="auth" onEnter ={onEnterStreamPage}/>
+
+      <Route path="/private_dashboard" component={PrivateDashboard} privacy="auth"/>
+      <Route path="/private_dashboard/:id" component={PrivateDashboard} privacy="auth" onEnter ={onEnterEditorPage}/>
+      <Route path="/login" component={Login}/>
+      <Route path="*" component={NotFound}/>
+    </Route>
   </Router>
 );
