@@ -4,9 +4,10 @@ import { createContainer } from 'meteor/react-meteor-data';
 import Iframe from 'react-iframe';
 
 export const StreamerFrame = () => {
-  if(Session.get('selectedStreamLink') === undefined){
+  if(Session.get('selectedStreamLink') === undefined || Session.get('streamCount') === undefined){
+    Session.set('selectedStreamId',undefined);
     return (
-      <p>There is no link to be found, try to select another</p>
+      <p>There is no link to be found, create one in the editor page or try to select another</p>
     );
   }else{
     return (

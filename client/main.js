@@ -50,14 +50,6 @@ Tracker.autorun(() => {
   }
 });
 
-// Tracker.autorun(() => {
-//   const selectedStreamVideoId = Session.get('selectedStreamVideoId');
-//
-//   //if(selectedStreamVideoId){
-//   //  browserHistory.replace(`/dashboard/${selectedStreamVideoId}`);
-//   //}
-// });
-
 Meteor.startup(() => {
   Session.set('selectedStreamId', undefined);
   Session.set('selectedPrivateDashboard', undefined);

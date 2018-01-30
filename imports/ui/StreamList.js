@@ -14,6 +14,7 @@ export const StreamList = (props) => {
   return (
     <div>
       <StreamListHeader />
+      { props.streams.length === 0 ?  props.Session.set('streamCount', undefined) : props.Session.set('streamCount', props.streams.length) }
       { props.streams.length === 0 ?  <StreamListEmptyItem /> : undefined }
       {props.streams.map((stream) => {
         return <StreamListItem key={stream._id} stream={stream}/>
@@ -24,14 +25,17 @@ export const StreamList = (props) => {
 };
 
 StreamList.propTypes = {
-  streams: React.PropTypes.array.isRequired
+  streams: React.PropTypes.array.isRequired,
+  Session: React.PropTypes.object.isRequired
 }
 
 export default createContainer(() => {
   const selectedStreamLink = Session.get('selectedStreamLink');
   const selectedStreamId = Session.get('selectedStreamId');
+  const streamCount = Session.get('streamCount');
   Meteor.subscribe('streams');
   return {
+    Session,
     streams: Streams.find().fetch().map((stream) => {
       return {
         ...stream,

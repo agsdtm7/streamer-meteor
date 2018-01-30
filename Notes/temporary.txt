@@ -11,3 +11,7 @@ https://www.youtube.com/embed/YVMZH1sMWNk
 
 11 alphabet code length
 30 before
+
+ERROR LIST TO BE FIXED 1/29/18
+1. Session selectedStreamLink should be reset to undefined when there are no items
+2. Page url should remain at the same when you refresh
